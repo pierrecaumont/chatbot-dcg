@@ -5,7 +5,6 @@ import streamlit as st
 import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
 # Fonction pour interagir avec l'API OpenAI
 def ask_openai(prompt):
     response = openai.ChatCompletion.create(
