@@ -1,21 +1,23 @@
-
 import openai
 import streamlit as st
 
 # Configurez votre clé API OpenAI
-openai.api_key = "VOTRE_API_KEY"
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 # Fonction pour interagir avec l'API OpenAI
 def ask_openai(prompt):
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # Ou utilisez "gpt-4" si disponible
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant specialized in DCG questions."},
+            {"role": "user", "content": prompt},
+        ],
         max_tokens=150,
-        n=1,
-        stop=None,
         temperature=0.7,
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content']
 
 # Interface utilisateur Streamlit
 st.title("Chatbot DCG Économie")
@@ -30,3 +32,4 @@ if st.button("Envoyer"):
         st.write("**Chatbot :**", response)
     else:
         st.write("Veuillez entrer une question.")
+
